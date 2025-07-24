@@ -1,21 +1,23 @@
-# EmotiBot - Emotion Based AI Chatbot 💬
+# 🤖 EmotiBot - Real-Time AI Chat Companion
 
-An AI-powered chatbot that detects emotions from user input using a fine-tuned DistilBERT model and replies with personalized responses.
+Welcome to **EmotiBot**, a sleek and minimalistic chatbot interface built using **Python**, **Streamlit**, and **OpenAI**. Talk to an AI, get responses instantly, and enjoy a smooth chatting experience – all in your browser!
 
-# 🔥 Features
-- Emotion detection using Hugging Face Transformers
-- Empathetic responses based on detected emotion
-- Text-to-speech (TTS) integration
-- Chat history memory using Streamlit
-- Simple and clean web interface
+## 🌟 Features
+- 💬 Real-time AI conversations
+- 🎯 Clean and intuitive UI
+- 📜 Chat history memory
+- ⌨️ Works with Enter key (no need to click send!)
+- 🚀 Deployed online via Streamlit Cloud
 
-# 🚀 Built With
+## 🚀 Live Demo
+Try it here 👉 [EmotiBot Live](https://emotibot-chatbot-buhlevaw5s6khzfcanzfsk.streamlit.app/)
+
+## 🧰 Tech Stack
 - Python
 - Streamlit
-- Hugging Face Transformers
-- gTTS
+- OpenAI API
 
-# 🎯 Live Demo (Coming Soon...)
-*Stay tuned for deployment link!*
-
-
+## 📦 Installation
+```bash
+pip install streamlit openai
+streamlit run app.py
