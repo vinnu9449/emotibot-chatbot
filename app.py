@@ -7,7 +7,7 @@ emotion_model = pipeline("text-classification", model="bhadresh-savani/distilber
 # Function to generate chatbot response
 def generate_response(user_input):
     predictions = emotion_model(user_input)
-    label = predictions[0]['label']  # Top emotion label
+    label = predictions[0]['label']
 
     responses = {
         "joy": "Yay! That’s great to hear 😊",
@@ -21,15 +21,30 @@ def generate_response(user_input):
 
     return responses.get(label.lower(), "I’m not sure how to respond... but I’m listening!")
 
-# Streamlit app UI
+# Initialize session state for storing chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Title
 st.title("💬 Emotion Chatbot")
 st.write("Talk to me and I’ll respond based on how you feel!")
 
-# User input
-user_input = st.text_input("You:", "")
+# Input form for Enter key submission
+with st.form(key="chat_form", clear_on_submit=True):
+    user_input = st.text_input("You:", "", placeholder="Type your message here and press Enter")
+    submitted = st.form_submit_button("Send")  # Hidden default button
 
-# Generate and display response
-if st.button("Send") or user_input:
-    if user_input.strip() != "":
-        bot_response = generate_response(user_input)
-        st.text_area("Chatbot:", value=bot_response, height=100)
+if submitted and user_input.strip():
+    # Add user message to history
+    st.session_state.messages.append(("You", user_input))
+
+    # Generate and store bot response
+    bot_response = generate_response(user_input)
+    st.session_state.messages.append(("Bot", bot_response))
+
+# Display chat history
+for sender, msg in st.session_state.messages:
+    if sender == "You":
+        st.markdown(f"**🧍‍♂️ You:** {msg}")
+    else:
+        st.markdown(f"**🤖 Bot:** {msg}")
