@@ -1,22 +1,14 @@
-
 import streamlit as st
 from transformers import pipeline
-from gtts import gTTS
-import os
 
-st.title("🎭 EmotiBot - Emotion-Based Chat Companion")
-st.write("Talk to me! I’ll detect your emotion and reply with empathy.")
+# Load the emotion detection model
+emotion_model = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion")
 
-emotion_model = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion", top_k=1)
-
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
-
-user_input = st.text_input("You:")
-
+# Function to generate chatbot response
 def generate_response(user_input):
-    prediction = emotion_model(user_input)[0][0]  # Access inner dict
-    label = prediction['label']
+    predictions = emotion_model(user_input)
+    label = predictions[0]['label']  # Top emotion label
+
     responses = {
         "joy": "Yay! That’s great to hear 😊",
         "sadness": "I’m here for you. Wanna talk? 💙",
@@ -26,14 +18,18 @@ def generate_response(user_input):
         "surprise": "Whoa! That’s unexpected! 😲",
         "neutral": "Tell me more! I’m all ears 👂"
     }
-    return responses.get(label, "I’m not sure how to respond... but I’m listening!")
 
-if user_input:
-    response = generate_response(user_input)
-    st.session_state.chat_history.append(("You", user_input))
-    st.session_state.chat_history.append(("Bot", response))
-    st.markdown(f"**Bot:** {response}")
+    return responses.get(label.lower(), "I’m not sure how to respond... but I’m listening!")
 
-st.markdown("### Chat History:")
-for speaker, msg in st.session_state.chat_history:
-    st.write(f"**{speaker}:** {msg}")
+# Streamlit app UI
+st.title("💬 Emotion Chatbot")
+st.write("Talk to me and I’ll respond based on how you feel!")
+
+# User input
+user_input = st.text_input("You:", "")
+
+# Generate and display response
+if st.button("Send") or user_input:
+    if user_input.strip() != "":
+        bot_response = generate_response(user_input)
+        st.text_area("Chatbot:", value=bot_response, height=100)
