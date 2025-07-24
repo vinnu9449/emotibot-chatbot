@@ -15,7 +15,7 @@ if 'chat_history' not in st.session_state:
 user_input = st.text_input("You:")
 
 def generate_response(user_input):
-    prediction = emotion_model(user_input)[0]
+    prediction = emotion_model(user_input)[0][0]  # Access inner dict
     label = prediction['label']
     responses = {
         "joy": "Yay! That’s great to hear 😊",
